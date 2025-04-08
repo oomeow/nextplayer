@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -5,9 +6,14 @@ plugins {
     alias(libs.plugins.kotlinSerialization)
 }
 
+java {
+    sourceCompatibility = JavaVersion.toVersion(libs.versions.android.jvm.get().toInt())
+    targetCompatibility = JavaVersion.toVersion(libs.versions.android.jvm.get().toInt())
+}
+
 tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        jvmTarget = libs.versions.android.jvm.get()
+    compilerOptions {
+        jvmTarget.set(JvmTarget.fromTarget(libs.versions.android.jvm.get()))
     }
 }
 
