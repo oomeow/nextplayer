@@ -557,6 +557,7 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         audioTrackButton.setOnClickListener {
+            binding.playerView.showController()
             TrackSelectionDialogFragment(
                 type = C.TRACK_TYPE_AUDIO,
                 tracks = mediaController?.currentTracks ?: return@setOnClickListener,
@@ -565,6 +566,7 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         subtitleTrackButton.setOnClickListener {
+            binding.playerView.showController()
             TrackSelectionDialogFragment(
                 type = C.TRACK_TYPE_TEXT,
                 tracks = mediaController?.currentTracks ?: return@setOnClickListener,
@@ -586,6 +588,7 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         playbackSpeedButton.setOnClickListener {
+            binding.playerView.showController()
             PlaybackSpeedControlsDialogFragment(
                 mediaController = mediaController ?: return@setOnClickListener,
             ).show(supportFragmentManager, "PlaybackSpeedSelectionDialog")
@@ -605,6 +608,7 @@ class PlayerActivity : AppCompatActivity() {
             toggleSystemBars(showBars = true)
         }
         videoZoomButton.setOnClickListener {
+            binding.playerView.showController()
             val videoZoom = playerPreferences.playerVideoZoom.next()
             // 还原通过手势缩放视频的缩放值
             mediaController?.currentMediaItem?.mediaId?.let {
@@ -627,6 +631,7 @@ class PlayerActivity : AppCompatActivity() {
             true
         }
         screenRotateButton.setOnClickListener {
+            binding.playerView.showController()
             requestedOrientation = when (resources.configuration.orientation) {
                 Configuration.ORIENTATION_LANDSCAPE -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
                 else -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
