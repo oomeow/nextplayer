@@ -55,7 +55,7 @@ fun FolderItem(
                 contentDescription = "",
                 tint = MaterialTheme.colorScheme.secondaryContainer,
                 modifier = Modifier
-                    .width(min(90.dp, LocalConfiguration.current.screenWidthDp.dp * 0.3f))
+                    .width(min(60.dp, LocalConfiguration.current.screenWidthDp.dp * 0.3f))
                     .aspectRatio(20 / 17f),
             )
         },

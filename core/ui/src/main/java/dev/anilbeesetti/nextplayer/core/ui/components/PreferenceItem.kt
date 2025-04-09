@@ -19,7 +19,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import dev.anilbeesetti.nextplayer.core.ui.designsystem.NextIcons
 
 @Composable
@@ -48,7 +47,7 @@ fun PreferenceItem(
             Text(
                 text = title,
                 maxLines = 1,
-                style = MaterialTheme.typography.titleLarge.copy(fontSize = 20.sp),
+                style = MaterialTheme.typography.titleMedium,
                 color = LocalContentColor.current.applyAlpha(enabled),
             )
         },
@@ -58,14 +57,14 @@ fun PreferenceItem(
                     text = it,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodySmall,
                     color = LocalContentColor.current.applyAlpha(enabled),
                     modifier = Modifier.padding(top = 2.dp),
                 )
             }
         },
         trailingContent = content,
-        modifier = modifier.padding(vertical = 8.dp),
+        modifier = modifier.padding(vertical = 4.dp),
     )
 }
 

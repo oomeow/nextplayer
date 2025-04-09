@@ -63,7 +63,6 @@ fun QuickSettingsDialog(
             Text(text = stringResource(R.string.quick_settings))
         },
         content = {
-            HorizontalDivider()
             Column(
                 modifier = Modifier.verticalScroll(rememberScrollState()),
             ) {
@@ -300,5 +299,17 @@ fun DialogPreferenceSwitch(
 fun QuickSettingsPreview() {
     Surface {
         QuickSettingsDialog(applicationPreferences = ApplicationPreferences(), onDismiss = { }, updatePreferences = {})
+    }
+}
+
+@Preview
+@Composable
+fun DialogPreferenceSwitchPreview() {
+    Surface {
+        DialogPreferenceSwitch(
+            text = "One",
+            isChecked = true,
+            onClick = {}
+        )
     }
 }
