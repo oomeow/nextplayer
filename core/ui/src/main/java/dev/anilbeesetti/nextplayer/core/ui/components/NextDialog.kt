@@ -1,6 +1,7 @@
 package dev.anilbeesetti.nextplayer.core.ui.components
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
@@ -27,7 +28,8 @@ fun NextDialog(
         title = title,
         text = { Column { content() } },
         modifier = modifier
-            .widthIn(max = configuration.screenWidthDp.dp - NextDialogDefaults.dialogMargin * 4),
+            .widthIn(max = configuration.screenWidthDp.dp - NextDialogDefaults.dialogMargin * 4)
+            .heightIn(max = configuration.screenHeightDp.dp - NextDialogDefaults.dialogMargin * 6),
         onDismissRequest = onDismissRequest,
         confirmButton = confirmButton,
         dismissButton = dismissButton,
