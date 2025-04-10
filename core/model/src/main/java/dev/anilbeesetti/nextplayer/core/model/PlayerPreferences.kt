@@ -14,7 +14,7 @@ data class PlayerPreferences(
     val controlButtonsPosition: ControlButtonsPosition = ControlButtonsPosition.LEFT,
     val playerVideoZoom: VideoZoom = VideoZoom.BEST_FIT,
     val defaultPlaybackSpeed: Float = 1.0f,
-    val controllerAutoHideTimeout: Int = 5,
+    val controllerAutoHideTimeout: Int = 3,
     val seekIncrement: Int = 10,
     val autoplay: Boolean = true,
     val autoPip: Boolean = true,
