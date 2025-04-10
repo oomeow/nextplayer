@@ -27,7 +27,7 @@ fun NextDialog(
         title = title,
         text = { Column { content() } },
         modifier = modifier
-            .widthIn(max = configuration.screenWidthDp.dp - NextDialogDefaults.dialogMargin * 2),
+            .widthIn(max = configuration.screenWidthDp.dp - NextDialogDefaults.dialogMargin * 4),
         onDismissRequest = onDismissRequest,
         confirmButton = confirmButton,
         dismissButton = dismissButton,
