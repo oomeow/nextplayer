@@ -1,4 +1,4 @@
-name: Build Alpha Version
+name: Alpha Build
 on:
   push:
     branches:
@@ -8,7 +8,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  update_version_and_publish:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -39,7 +39,7 @@ jobs:
           fileName: 'keystore.jks'
           encodedString: ${{ secrets.KEYSTORE }}
 
-      - name: Build app
+      - name: Build APK
         run: |
           echo "Running fastlane build"
           bundle exec fastlane build
@@ -57,7 +57,7 @@ jobs:
           mv app/build/outputs/apk/release/app-x86-release.apk app/build/outputs/apk/release/nextplayer-v${{ env.VERSION_NAME }}-x86.apk
           mv app/build/outputs/apk/release/app-x86_64-release.apk app/build/outputs/apk/release/nextplayer-v${{ env.VERSION_NAME }}-x86_64.apk
 
-      - name: Create Draft Release
+      - name: Create Alpha Pre-release
         id: create_draft_release
         uses: softprops/action-gh-release@v2
         env:
@@ -65,5 +65,6 @@ jobs:
         with:
           files: app/build/outputs/apk/release/nextplayer*
           name: Alpha
+          generate_release_notes: true
           prerelease: true
           tag_name: alpha

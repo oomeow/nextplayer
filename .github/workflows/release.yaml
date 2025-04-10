@@ -1,4 +1,4 @@
-name: Update version and publish APK
+name: Release
 on:
   workflow_dispatch:
     inputs:
@@ -72,7 +72,7 @@ jobs:
           echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_ENV
           echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_ENV
 
-      - name: Update app/build.gradle.kts updated version name and version code
+      - name: Update version name and version code (app/build.gradle.kts)
         run: |
           echo "Updating version code to ${{ env.VERSION_CODE }} and version name to ${{ env.VERSION_NAME }}"
           sed -i "s/versionCode = [0-9]\+/versionCode = ${{ env.VERSION_CODE }}/g" app/build.gradle.kts
