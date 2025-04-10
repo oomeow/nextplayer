@@ -39,13 +39,9 @@ class PlayerViewModel @Inject constructor(
         initialValue = runBlocking { preferencesRepository.applicationPreferences.first() },
     )
 
-    suspend fun getPlaylistFromUri(uri: Uri): List<Video> {
-        return getSortedPlaylistUseCase.invoke(uri)
-    }
+    suspend fun getPlaylistFromUri(uri: Uri): List<Video> = getSortedPlaylistUseCase.invoke(uri)
 
-    suspend fun getVideoState(uri: String): VideoState? {
-        return mediaRepository.getVideoState(uri)
-    }
+    suspend fun getVideoState(uri: String): VideoState? = mediaRepository.getVideoState(uri)
 
     fun updateMediumZoom(uri: String, zoom: Float) {
         mediaRepository.updateMediumZoom(uri, zoom)

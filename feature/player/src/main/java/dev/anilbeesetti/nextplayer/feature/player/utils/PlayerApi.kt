@@ -10,9 +10,10 @@ import dev.anilbeesetti.nextplayer.feature.player.model.Subtitle
 class PlayerApi(val activity: PlayerActivity) {
 
     private val extras = activity.intent.extras
-    val isApiAccess: Boolean get() = extras != null
-    val hasPosition: Boolean get() = extras?.containsKey(API_POSITION) == true
-    val hasTitle: Boolean get() = extras?.containsKey(API_TITLE) == true
+
+//    val isApiAccess: Boolean get() = extras != null
+    private val hasPosition: Boolean get() = extras?.containsKey(API_POSITION) == true
+    private val hasTitle: Boolean get() = extras?.containsKey(API_TITLE) == true
     val shouldReturnResult: Boolean get() = extras?.containsKey(API_RETURN_RESULT) == true
     val position: Int? get() = if (hasPosition) extras?.getInt(API_POSITION) else null
     val title: String? get() = if (hasTitle) extras?.getString(API_TITLE) else null
@@ -38,15 +39,13 @@ class PlayerApi(val activity: PlayerActivity) {
         }
     }
 
-    fun getResult(isPlaybackFinished: Boolean, duration: Long, position: Long): Intent {
-        return Intent(API_RESULT_INTENT).apply {
-            if (isPlaybackFinished) {
-                putExtra(API_END_BY, API_END_BY_COMPLETION)
-            } else {
-                putExtra(API_END_BY, API_END_BY_USER)
-                if (duration != C.TIME_UNSET) putExtra(API_DURATION, duration.toInt())
-                if (position != C.TIME_UNSET) putExtra(API_POSITION, position.toInt())
-            }
+    fun getResult(isPlaybackFinished: Boolean, duration: Long, position: Long): Intent = Intent(API_RESULT_INTENT).apply {
+        if (isPlaybackFinished) {
+            putExtra(API_END_BY, API_END_BY_COMPLETION)
+        } else {
+            putExtra(API_END_BY, API_END_BY_USER)
+            if (duration != C.TIME_UNSET) putExtra(API_DURATION, duration.toInt())
+            if (position != C.TIME_UNSET) putExtra(API_POSITION, position.toInt())
         }
     }
 

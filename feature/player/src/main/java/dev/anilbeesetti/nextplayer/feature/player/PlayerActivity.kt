@@ -44,6 +44,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.net.toUri
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.C
@@ -642,7 +643,7 @@ class PlayerActivity : AppCompatActivity() {
                 Toast.makeText(this, coreUiR.string.enable_pip_from_settings, Toast.LENGTH_SHORT).show()
                 try {
                     Intent("android.settings.PICTURE_IN_PICTURE_SETTINGS").apply {
-                        data = Uri.parse("package:$packageName")
+                        data = "package:$packageName".toUri()
                         startActivity(this@apply)
                     }
                 } catch (e: Exception) {
@@ -681,14 +682,11 @@ class PlayerActivity : AppCompatActivity() {
     private suspend fun playVideo(uri: Uri) = withContext(Dispatchers.Default) {
         val mediaContentUri = getMediaContentUri(uri)
         val playlist = mediaContentUri?.let { mediaUri ->
-            viewModel.getPlaylistFromUri(mediaUri)
-                .map { it.uriString }
-                .toMutableList()
-                .apply {
-                    if (!contains(mediaUri.toString())) {
-                        add(index = 0, element = mediaUri.toString())
-                    }
+            viewModel.getPlaylistFromUri(mediaUri).map { it.uriString }.toMutableList().apply {
+                if (!contains(mediaUri.toString())) {
+                    add(index = 0, element = mediaUri.toString())
                 }
+            }
         } ?: listOf(uri.toString())
 
         val mediaItemIndexToPlay = playlist.indexOfFirst {
@@ -837,7 +835,7 @@ class PlayerActivity : AppCompatActivity() {
         when (keyCode) {
             KeyEvent.KEYCODE_VOLUME_UP,
             KeyEvent.KEYCODE_DPAD_UP,
-                -> {
+            -> {
                 if (!binding.playerView.isControllerFullyVisible || keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
                     volumeManager.increaseVolume(playerPreferences.showSystemVolumePanel)
                     showVolumeGestureLayout()
@@ -847,7 +845,7 @@ class PlayerActivity : AppCompatActivity() {
 
             KeyEvent.KEYCODE_VOLUME_DOWN,
             KeyEvent.KEYCODE_DPAD_DOWN,
-                -> {
+            -> {
                 if (!binding.playerView.isControllerFullyVisible || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
                     volumeManager.decreaseVolume(playerPreferences.showSystemVolumePanel)
                     showVolumeGestureLayout()
@@ -859,7 +857,7 @@ class PlayerActivity : AppCompatActivity() {
             KeyEvent.KEYCODE_MEDIA_PAUSE,
             KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE,
             KeyEvent.KEYCODE_BUTTON_SELECT,
-                -> {
+            -> {
                 when {
                     keyCode == KeyEvent.KEYCODE_MEDIA_PAUSE -> mediaController?.pause()
                     keyCode == KeyEvent.KEYCODE_MEDIA_PLAY -> mediaController?.play()
@@ -872,7 +870,7 @@ class PlayerActivity : AppCompatActivity() {
             KeyEvent.KEYCODE_BUTTON_START,
             KeyEvent.KEYCODE_BUTTON_A,
             KeyEvent.KEYCODE_SPACE,
-                -> {
+            -> {
                 if (!binding.playerView.isControllerFullyVisible) {
                     binding.playerView.togglePlayPause()
                     return true
@@ -882,7 +880,7 @@ class PlayerActivity : AppCompatActivity() {
             KeyEvent.KEYCODE_DPAD_LEFT,
             KeyEvent.KEYCODE_BUTTON_L2,
             KeyEvent.KEYCODE_MEDIA_REWIND,
-                -> {
+            -> {
                 if (!binding.playerView.isControllerFullyVisible || keyCode == KeyEvent.KEYCODE_MEDIA_REWIND) {
                     mediaController?.run {
                         if (scrubStartPosition == -1L) {
@@ -902,7 +900,7 @@ class PlayerActivity : AppCompatActivity() {
             KeyEvent.KEYCODE_DPAD_RIGHT,
             KeyEvent.KEYCODE_BUTTON_R2,
             KeyEvent.KEYCODE_MEDIA_FAST_FORWARD,
-                -> {
+            -> {
                 if (!binding.playerView.isControllerFullyVisible || keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD) {
                     mediaController?.run {
                         if (scrubStartPosition == -1L) {
@@ -923,7 +921,7 @@ class PlayerActivity : AppCompatActivity() {
             KeyEvent.KEYCODE_ENTER,
             KeyEvent.KEYCODE_DPAD_CENTER,
             KeyEvent.KEYCODE_NUMPAD_ENTER,
-                -> {
+            -> {
                 if (!binding.playerView.isControllerFullyVisible) {
                     binding.playerView.showController()
                     return true
@@ -946,7 +944,7 @@ class PlayerActivity : AppCompatActivity() {
             KeyEvent.KEYCODE_VOLUME_DOWN,
             KeyEvent.KEYCODE_DPAD_UP,
             KeyEvent.KEYCODE_DPAD_DOWN,
-                -> {
+            -> {
                 hideVolumeGestureLayout()
                 return true
             }
@@ -957,7 +955,7 @@ class PlayerActivity : AppCompatActivity() {
             KeyEvent.KEYCODE_DPAD_RIGHT,
             KeyEvent.KEYCODE_BUTTON_R2,
             KeyEvent.KEYCODE_MEDIA_FAST_FORWARD,
-                -> {
+            -> {
                 hidePlayerInfo()
                 return true
             }
@@ -1115,19 +1113,17 @@ fun createPipAction(
     title: String,
     @DrawableRes icon: Int,
     actionCode: Int,
-): RemoteAction {
-    return RemoteAction(
-        Icon.createWithResource(context, icon),
-        title,
-        title,
-        PendingIntent.getBroadcast(
-            context,
-            actionCode,
-            Intent(PlayerActivity.PIP_INTENT_ACTION).apply {
-                putExtra(PlayerActivity.PIP_INTENT_ACTION_CODE, actionCode)
-                setPackage(context.packageName)
-            },
-            PendingIntent.FLAG_IMMUTABLE,
-        ),
-    )
-}
+): RemoteAction = RemoteAction(
+    Icon.createWithResource(context, icon),
+    title,
+    title,
+    PendingIntent.getBroadcast(
+        context,
+        actionCode,
+        Intent(PlayerActivity.PIP_INTENT_ACTION).apply {
+            putExtra(PlayerActivity.PIP_INTENT_ACTION_CODE, actionCode)
+            setPackage(context.packageName)
+        },
+        PendingIntent.FLAG_IMMUTABLE,
+    ),
+)

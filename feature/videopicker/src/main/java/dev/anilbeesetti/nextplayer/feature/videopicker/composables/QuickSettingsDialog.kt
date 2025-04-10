@@ -309,7 +309,7 @@ fun DialogPreferenceSwitchPreview() {
         DialogPreferenceSwitch(
             text = "One",
             isChecked = true,
-            onClick = {}
+            onClick = { },
         )
     }
 }
